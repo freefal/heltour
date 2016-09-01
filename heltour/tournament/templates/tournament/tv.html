@@ -69,7 +69,9 @@
 
   run();
 
-  function newBoard(gameId) {
+  function newBoard(gameId, white_team, black_team) {
+    console.log(white_team);
+    console.log(black_team)
     let chess = new Chess();
 
     let ground = Chessground(document.getElementById('ground_' + gameId), {
@@ -145,7 +147,13 @@
             <section>
                 <div class="chessground small {% if league.theme == 'green' %}green{% else %}blue{% endif %} cburnett" id="ground_{{ game_id }}">
                   <script>
-                    newBoard('{{ game_id }}');
+                    {% if pairing.teamplayerpairing %}
+                      {% with white_team=pairing.teamplayerpairing.white_team.name black_team=pairing.teamplayerpairing.black_team.name %}
+                      newBoard('{{ game_id }}', '{{ white_team }}', '{{ black_team }}');
+                      {% endwith %}
+                    {% else %}
+                      newBoard('{{ game_id }}');
+                    {% endif %}
                   </script>
                 </div>
                 <div id="label_{{ game_id }}" class="gameLabel">
